@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, ScrollView, Switch, Modal, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, ScrollView, Switch, Modal, TextInput } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,16 +11,6 @@ const Index = () => {
         {
             id: 1,
             name: 'Dwarfita and Daily Mangal Alati',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 2,
-            name: 'Mailam',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -210,7 +200,7 @@ const Index = () => {
         },
         {
             id: 21,
-            name: 'Khatasejalagi, harp and song, Puspanjali, Pushpalagi, Pahuda, Muda and Shodha',
+            name: 'Khataseja, harp and song, Puspanjali, Pushpalagi, Pahuda, Muda and Shodha',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -251,8 +241,18 @@ const Index = () => {
             elapsedTime: 0,
             totalDuration: 0
         },
+        // {
+        //     id: 401,
+        //     name: 'Mailam',
+        //     startTime: '',
+        //     endTime: '',
+        //     startDisabled: false,
+        //     stopDisabled: false,
+        //     elapsedTime: 0,
+        //     totalDuration: 0
+        // },
         {
-            id: 401,
+            id: 501,
             name: 'Nakhetra Bandapana',
             startTime: '',
             endTime: '',
@@ -262,7 +262,7 @@ const Index = () => {
             totalDuration: 0
         },
         {
-            id: 501,
+            id: 601,
             name: 'Banakalagi',
             startTime: '',
             endTime: '',
@@ -272,7 +272,7 @@ const Index = () => {
             totalDuration: 0
         },
         {
-            id: 601,
+            id: 701,
             name: 'Benta',
             startTime: '',
             endTime: '',
@@ -289,6 +289,7 @@ const Index = () => {
     const [timers, setTimers] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [otherNitiName, setOtherNitiName] = useState('');
 
     const handleSelectItem = (item) => {
         setSelectedItem(item);
@@ -300,7 +301,6 @@ const Index = () => {
         setSelectedItem(null);
         setDailyNiti((prv) => (([{ special_niti: true, ...selectedItem }, ...prv])));
     };
-
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -548,8 +548,7 @@ const Index = () => {
                 visible={isModalVisible}
                 onRequestClose={() => {
                     setIsModalVisible(!isModalVisible);
-                }}
-            >
+                }}>
                 <View style={styles.modalContainer}>
                     <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => { setIsModalVisible(false); }}>
                         <Ionicons name="close" color={'#000'} size={30} />
@@ -577,12 +576,19 @@ const Index = () => {
                                 </TouchableOpacity>
                             )}
                         />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter Niti name"
+                            placeholderTextColor="#aaa"
+                            value={otherNitiName}
+                            onChangeText={setOtherNitiName}
+                        />
                         {selectedItem ?
-                            <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: 'red', paddingVertical: 7, paddingHorizontal: 10, borderRadius: 5 }}>
+                            <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: 'red', paddingVertical: 10, paddingHorizontal: 10, borderRadius: 5 }}>
                                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600', textAlign: 'center' }}>Submit</Text>
                             </TouchableOpacity>
                             :
-                            <TouchableOpacity disabled style={{ backgroundColor: 'gray', paddingVertical: 7, paddingHorizontal: 10, borderRadius: 5 }}>
+                            <TouchableOpacity disabled style={{ backgroundColor: 'gray', paddingVertical: 10, paddingHorizontal: 10, borderRadius: 5 }}>
                                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600', textAlign: 'center' }}>Submit</Text>
                             </TouchableOpacity>
                         }
@@ -656,10 +662,27 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: '#fff',
         width: '90%',
-        height: 350,
+        height: 400,
         alignSelf: 'center',
         top: 250,
         borderRadius: 10,
         padding: 15
-    }
+    },
+    input: {
+        width: '100%',
+        height: 50,
+        borderColor: '#ddd',
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingHorizontal: 15,
+        fontSize: 18,
+        marginBottom: 28,
+        backgroundColor: '#fff',
+        color: '#333',
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 3, // Adds a soft shadow effect for Android
+    },
 });
