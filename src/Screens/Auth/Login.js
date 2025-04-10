@@ -17,7 +17,10 @@ const Login = () => {
     }, [phoneNumber]);
 
     const handleLogin = async () => {
-        setIsLoading(true);
+        // setIsLoading(true);
+        navigation.navigate('OtpVerify');
+        return;
+
         try {
             // const phoneRegex = /^\+91\d{10}$/;
             if (phoneNumber.length !== 10) {
@@ -67,7 +70,7 @@ const Login = () => {
     };
 
     return (
-        <ImageBackground source={require('./../../assets/images/backgroundImg3.jpeg')} style={styles.backgroundImage}>
+        <ImageBackground source={require('./../../assets/images/ratha.jpeg')} style={styles.backgroundImage}>
             {/* Overlay with opacity */}
             <View style={styles.overlay} />
             <View style={styles.container}>

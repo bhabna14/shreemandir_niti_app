@@ -14,6 +14,8 @@ import OtpVerify from './src/Screens/Auth/OtpVerify'
 // Pages
 import Home from './src/Screens/Home/Index'
 import ManualNitiPage from './src/Screens/ManualNitiPage/Index'
+import Darshan from './src/Screens/Darshan/Index'
+import MahaPrasad from './src/Screens/MahaPrasad/Index'
 
 const Stack = createNativeStackNavigator()
 
@@ -47,8 +49,11 @@ const App = () => {
         {showSplash ? (<Stack.Screen name="SplashScreen" component={SplashScreen} options={{ presentation: 'modal', animationTypeForReplace: 'push', animation: 'slide_from_right' }} />) : null}
         {access_token ? <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> : <Stack.Screen name="Login" component={Login} />}
         {!access_token ? <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> : <Stack.Screen name="Login" component={Login} />}
+        {/* <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> */}
         <Stack.Screen name="OtpVerify" component={OtpVerify} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Darshan" component={Darshan} />
+        <Stack.Screen name="MahaPrasad" component={MahaPrasad} />
         {/* <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> */}
       </Stack.Navigator>
     </NavigationContainer>

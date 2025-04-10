@@ -22,7 +22,10 @@ const OtpVerify = (props) => {
     const handleOtpVerification = async () => {
         let platformName = DeviceInfo.getSystemName();
         // let deviceModel = DeviceInfo.getModel();
-        setIsLoading(true);
+        // setIsLoading(true);
+        navigation.replace('ManualNitiPage');
+        return;
+
         try {
             if (otp === "" || otp.length != 6) {
                 setErrorMessage('Please enter a valid OTP');
@@ -73,10 +76,7 @@ const OtpVerify = (props) => {
     };
 
     return (
-        <ImageBackground
-            source={{ uri: 'https://i.pinimg.com/736x/58/bd/4f/58bd4fc9ebfccc1f2de419529bbf1a12.jpg' }}
-            style={styles.backgroundImage}
-        >
+        <ImageBackground source={require('./../../assets/images/ratha.jpeg')} style={styles.backgroundImage}>
             <View style={styles.container}>
                 <Text style={styles.title}>OTP Verification</Text>
                 <Text style={styles.subTitle}>Enter the OTP sent to your phone</Text>

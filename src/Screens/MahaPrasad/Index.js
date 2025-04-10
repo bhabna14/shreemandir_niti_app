@@ -7,10 +7,20 @@ import { useNavigation } from '@react-navigation/native';
 
 const Index = () => {
 
-    const initialNiti = [
+    const initialMahaprasad = [
         {
             id: 1,
-            name: 'Dwarfita and Daily Mangal Alati',
+            name: 'Sakala Dhoopa',
+            startTime: '',
+            endTime: '',
+            startDisabled: false,
+            stopDisabled: false,
+            elapsedTime: 0,
+            totalDuration: 0
+        },
+        {
+            id: 2,
+            name: 'Madhyana Dhoopa',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -20,7 +30,7 @@ const Index = () => {
         },
         {
             id: 3,
-            name: 'Abakash',
+            name: 'Sandhya Dhoopa',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -30,177 +40,7 @@ const Index = () => {
         },
         {
             id: 4,
-            name: 'Abakash Para Mailam',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 5,
-            name: 'Sahan Mela or public spectacle',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 6,
-            name: 'Besha Lagi',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 7,
-            name: 'Rosa Homo',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 8,
-            name: 'Surya Puja',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 9,
-            name: 'Dwarapala Puja',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 10,
-            name: 'Gopalalavah Bhoga',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 11,
-            name: 'Sakal Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 12,
-            name: 'Mailam and Bhogamandap',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 13,
-            name: 'Madhyan Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 14,
-            name: 'Madhyan Pahuda',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 15,
-            name: 'Pahuda Phitiba and Sandhya Alati',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 16,
-            name: 'Sandhya Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 17,
-            name: 'Sahan Mela after Sandhya Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 18,
-            name: 'Mailam and Chandan Lagi',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 19,
-            name: 'Bada Singhar Besha',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 20,
-            name: 'Bada Singhar Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 21,
-            name: 'Khataseja, harp and song, Puspanjali, Pushpalagi, Pahuda, Muda and Shodha',
+            name: 'Bada Singhara Dhoopa',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -210,10 +50,10 @@ const Index = () => {
         },
     ];
 
-    const specialNiti = [
+    const specialMahaprasad = [
         {
             id: 101,
-            name: 'Mahasnahna',
+            name: 'Pahili Bhog',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -221,75 +61,15 @@ const Index = () => {
             elapsedTime: 0,
             totalDuration: 0
         },
-        {
-            id: 201,
-            name: 'Bada Mahasnahna',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 301,
-            name: 'Majana o Ekanta',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        // {
-        //     id: 401,
-        //     name: 'Mailam',
-        //     startTime: '',
-        //     endTime: '',
-        //     startDisabled: false,
-        //     stopDisabled: false,
-        //     elapsedTime: 0,
-        //     totalDuration: 0
-        // },
-        {
-            id: 501,
-            name: 'Nakhetra Bandapana',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 601,
-            name: 'Banakalagi',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 701,
-            name: 'Benta',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-    ]
+    ];
 
     const [activeTab, setActiveTab] = useState('upcoming');
-    const [dailyNiti, setDailyNiti] = useState(initialNiti);
+    const [dailyMahaprasad, setDailyMahaprasad] = useState(initialMahaprasad);
     const [activeIndex, setActiveIndex] = useState(0);
     const [timers, setTimers] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [otherNitiName, setOtherNitiName] = useState('');
+    const [otherMahaprasadName, setOtherMahaprasadName] = useState('');
     const navigation = useNavigation();
 
     const handleSelectItem = (item) => {
@@ -300,13 +80,13 @@ const Index = () => {
         console.log("Selected Item:", selectedItem);
         setIsModalVisible(false);
         setSelectedItem(null);
-        setDailyNiti((prv) => (([{ special_niti: true, ...selectedItem }, ...prv])));
+        setDailyMahaprasad((prv) => (([{ special_mahaprasad: true, ...selectedItem }, ...prv])));
     };
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setDailyNiti(prevNiti =>
-                prevNiti.map(item => {
+            setDailyMahaprasad(prevMahaprasad =>
+                prevMahaprasad.map(item => {
                     if (item.startDisabled && !item.stopDisabled && !item.isPaused) {
                         const elapsed = (Date.now() - item.startTimestamp) / 1000;
                         return { ...item, elapsedTime: Math.round(elapsed) };
@@ -321,8 +101,8 @@ const Index = () => {
 
     const handleStart = id => {
         const startTimestamp = Date.now();
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyMahaprasad(prevMahaprasad =>
+            prevMahaprasad.map(item =>
                 item.id === id
                     ? { ...item, startTimestamp, startDisabled: true, stopDisabled: false, startTime: new Date(startTimestamp).toLocaleTimeString(), isPaused: false }
                     : item
@@ -333,8 +113,8 @@ const Index = () => {
     const handleStop = id => {
         const endTimestamp = Date.now();
         const endTime = new Date(endTimestamp).toLocaleTimeString();
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyMahaprasad(prevMahaprasad =>
+            prevMahaprasad.map(item =>
                 item.id === id
                     ? {
                         ...item,
@@ -350,8 +130,8 @@ const Index = () => {
     };
 
     const handlePause = id => {
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyMahaprasad(prevMahaprasad =>
+            prevMahaprasad.map(item =>
                 item.id === id ? { ...item, isPaused: true } : item
             )
         );
@@ -361,8 +141,8 @@ const Index = () => {
 
     const handleResume = id => {
         const resumeTimestamp = Date.now();
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyMahaprasad(prevMahaprasad =>
+            prevMahaprasad.map(item =>
                 item.id === id ? { ...item, startTimestamp: resumeTimestamp - item.elapsedTime * 1000, isPaused: false } : item
             )
         );
@@ -375,19 +155,18 @@ const Index = () => {
         return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
-    // Separate upcoming and completed items based on activeTab
-    const upcomingNiti = dailyNiti.filter(item => !item.endTime);
-    const completedNiti = dailyNiti.filter(item => item.endTime);
+    const upcomingMahaprasad = dailyMahaprasad.filter(item => !item.endTime);
+    const completedMahaprasad = dailyMahaprasad.filter(item => item.endTime);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#FFBE00', opacity: isModalVisible ? 0.8 : 1 }}>
             <View style={styles.headerPart}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 10 }}>Daily Niti</Text>
+                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 10 }}>Maha Prasad</Text>
                 </View>
                 <View style={{ marginRight: 10 }}>
                     <TouchableOpacity onPress={() => setIsModalVisible(true)} style={{ backgroundColor: 'green', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6 }}>
-                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Special Niti</Text>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Special Maha Prasad</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -401,11 +180,11 @@ const Index = () => {
             </View>
             <View style={{ backgroundColor: '#FFBE00', width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity onPress={() => setActiveTab('upcoming')} style={{ width: '50%', alignItems: 'center', padding: 10 }}>
-                    <Text style={{ color: activeTab === 'upcoming' ? '#B7070A' : '#444545', fontSize: activeTab === 'upcoming' ? 16 : 15, fontWeight: 'bold' }}>Upcoming Niti</Text>
+                    <Text style={{ color: activeTab === 'upcoming' ? '#B7070A' : '#444545', fontSize: activeTab === 'upcoming' ? 16 : 15, fontWeight: 'bold' }}>Upcoming MahaPrasad</Text>
                     <View style={{ backgroundColor: activeTab === 'upcoming' ? '#B7070A' : '#444545', width: '100%', height: activeTab === 'upcoming' ? 2 : 1, marginTop: 5 }} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setActiveTab('complete')} style={{ width: '50%', alignItems: 'center', padding: 10 }}>
-                    <Text style={{ color: activeTab === 'complete' ? '#B7070A' : '#444545', fontSize: activeTab === 'complete' ? 16 : 15, fontWeight: 'bold' }}>Completed Niti</Text>
+                    <Text style={{ color: activeTab === 'complete' ? '#B7070A' : '#444545', fontSize: activeTab === 'complete' ? 16 : 15, fontWeight: 'bold' }}>Completed MahaPrasad</Text>
                     <View style={{ backgroundColor: activeTab === 'complete' ? '#B7070A' : '#444545', width: '100%', height: activeTab === 'complete' ? 2 : 1, marginTop: 5 }} />
                 </TouchableOpacity>
             </View>
@@ -414,7 +193,7 @@ const Index = () => {
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         scrollEnabled={false}
-                        data={upcomingNiti}
+                        data={upcomingMahaprasad}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item, index }) => (
                             <View style={styles.smallCell1}>
@@ -441,39 +220,22 @@ const Index = () => {
                                         <View style={{ width: '40%', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around' }}>
                                             {item.isPaused ? (
                                                 <TouchableOpacity
-                                                    style={{
-                                                        backgroundColor: '#11dcf2',
-                                                        paddingVertical: 7,
-                                                        paddingHorizontal: 7,
-                                                        borderRadius: 5
-                                                    }}
+                                                    style={{ backgroundColor: '#11dcf2', paddingVertical: 7, paddingHorizontal: 7, borderRadius: 5 }}
                                                     onPress={() => handleResume(item.id)}
                                                 >
                                                     <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Resume</Text>
                                                 </TouchableOpacity>
                                             ) : (
-                                                !item.special_niti ?
-                                                    <TouchableOpacity
-                                                        style={{
-                                                            backgroundColor: '#11dcf2',
-                                                            paddingVertical: 7,
-                                                            paddingHorizontal: 7,
-                                                            borderRadius: 5
-                                                        }}
-                                                        onPress={() => handlePause(item.id)}
-                                                    >
-                                                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Pause</Text>
-                                                    </TouchableOpacity>
-                                                    :
-                                                    null
+                                                !item.special_mahaprasad &&
+                                                <TouchableOpacity
+                                                    style={{ backgroundColor: '#11dcf2', paddingVertical: 7, paddingHorizontal: 7, borderRadius: 5 }}
+                                                    onPress={() => handlePause(item.id)}
+                                                >
+                                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Pause</Text>
+                                                </TouchableOpacity>
                                             )}
                                             <TouchableOpacity
-                                                style={{
-                                                    backgroundColor: 'red',
-                                                    paddingVertical: 7,
-                                                    paddingHorizontal: 10,
-                                                    borderRadius: 5
-                                                }}
+                                                style={{ backgroundColor: 'red', paddingVertical: 7, paddingHorizontal: 10, borderRadius: 5 }}
                                                 onPress={() => handleStop(item.id)}
                                             >
                                                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
@@ -482,12 +244,7 @@ const Index = () => {
                                     ) : (
                                         <View style={{ width: '40%', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
                                             <TouchableOpacity
-                                                style={{
-                                                    backgroundColor: 'green',
-                                                    paddingVertical: 7,
-                                                    paddingHorizontal: 14,
-                                                    borderRadius: 5
-                                                }}
+                                                style={{ backgroundColor: 'green', paddingVertical: 7, paddingHorizontal: 14, borderRadius: 5 }}
                                                 onPress={() => handleStart(item.id)}
                                             >
                                                 <Text style={{ color: '#fff', fontSize: 17, fontWeight: '600' }}>Start</Text>
@@ -497,12 +254,7 @@ const Index = () => {
                                 ) : (
                                     <View style={{ width: '40%', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
                                         <TouchableOpacity
-                                            style={{
-                                                backgroundColor: 'gray',
-                                                paddingVertical: 7,
-                                                paddingHorizontal: 14,
-                                                borderRadius: 5
-                                            }}
+                                            style={{ backgroundColor: 'gray', paddingVertical: 7, paddingHorizontal: 14, borderRadius: 5 }}
                                             disabled
                                         >
                                             <Text style={{ color: '#fff', fontSize: 17, fontWeight: '600' }}>Start</Text>
@@ -517,7 +269,7 @@ const Index = () => {
                 <ScrollView style={styles.cell}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        data={completedNiti.reverse()}
+                        data={completedMahaprasad.reverse()}
                         scrollEnabled={false}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
@@ -547,9 +299,8 @@ const Index = () => {
                 animationType="slide"
                 transparent={true}
                 visible={isModalVisible}
-                onRequestClose={() => {
-                    setIsModalVisible(!isModalVisible);
-                }}>
+                onRequestClose={() => setIsModalVisible(!isModalVisible)}
+            >
                 <View style={styles.modalContainer}>
                     <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => { setIsModalVisible(false); }}>
                         <Ionicons name="close" color={'#000'} size={30} />
@@ -557,7 +308,7 @@ const Index = () => {
                     <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 10 }}>
                         <FlatList
                             showsVerticalScrollIndicator={false}
-                            data={specialNiti}
+                            data={specialMahaprasad}
                             scrollEnabled={false}
                             keyExtractor={item => item.id.toString()}
                             renderItem={({ item }) => (
@@ -579,10 +330,10 @@ const Index = () => {
                         />
                         <TextInput
                             style={styles.input}
-                            placeholder="Enter Niti name"
+                            placeholder="Enter Maha Prasad name"
                             placeholderTextColor="#aaa"
-                            value={otherNitiName}
-                            onChangeText={setOtherNitiName}
+                            value={otherMahaprasadName}
+                            onChangeText={setOtherMahaprasadName}
                         />
                         {selectedItem ?
                             <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: 'red', paddingVertical: 10, paddingHorizontal: 10, borderRadius: 5 }}>
@@ -600,15 +351,15 @@ const Index = () => {
             <View style={{ padding: 0, height: 58, borderRadius: 0, backgroundColor: '#f2ebe4', alignItems: 'center' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', margin: 0, paddingBottom: 5 }}>
                     <View style={{ padding: 0, width: '30%' }}>
-                        <View activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+                        <TouchableHighlight onPressIn={() => navigation.navigate('ManualNitiPage')} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
                             <View style={{ alignItems: 'center' }}>
-                                <Image source={require('../../assets/images/panji765.png')} style={{ width: 24, height: 24, marginTop: 12 }} />
-                                <Text style={{ color: '#dc3545', fontSize: 11, fontWeight: '500', height: 17 }}>Niti</Text>
+                                <Image source={require('../../assets/images/panji765.png')} style={{ width: 24, height: 24, tintColor: 'gray', marginTop: 12 }} />
+                                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Niti</Text>
                             </View>
-                        </View>
+                        </TouchableHighlight>
                     </View>
                     <View style={{ padding: 0, width: '30%' }}>
-                        <TouchableHighlight onPressIn={() => navigation.navigate('Darshan')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+                        <TouchableHighlight onPressIn={() => navigation.navigate('Darshan')} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
                             <View style={{ alignItems: 'center' }}>
                                 <Image source={require('../../assets/images/darshan.png')} style={{ width: 32, height: 32, tintColor: 'gray', marginTop: 6, }} />
                                 <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Darshan</Text>
@@ -616,12 +367,12 @@ const Index = () => {
                         </TouchableHighlight>
                     </View>
                     <View style={{ padding: 0, width: '30%' }}>
-                        <TouchableHighlight onPressIn={() => navigation.navigate('MahaPrasad')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+                        <View activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
                             <View style={{ alignItems: 'center', marginTop: 3 }}>
-                                <Image source={require('../../assets/images/mahaprasadad32412.png')} style={{ width: 34, height: 34, tintColor: 'gray' }} />
-                                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Maha Prasad</Text>
+                                <Image source={require('../../assets/images/mahaprasadad32412.png')} style={{ width: 34, height: 34 }} />
+                                <Text style={{ color: '#dc3545', fontSize: 11, fontWeight: '500', height: 17 }}>Maha Prasad</Text>
                             </View>
-                        </TouchableHighlight>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -691,7 +442,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: '#fff',
         width: '90%',
-        height: 400,
+        height: 240,
         alignSelf: 'center',
         top: 250,
         borderRadius: 10,
@@ -712,6 +463,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
         shadowRadius: 2,
-        elevation: 3, // Adds a soft shadow effect for Android
+        elevation: 3,
     },
 });

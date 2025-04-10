@@ -7,10 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 
 const Index = () => {
 
-    const initialNiti = [
+    const initialDarshan = [
         {
             id: 1,
-            name: 'Dwarfita and Daily Mangal Alati',
+            name: 'Mangal Arati',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -20,7 +20,7 @@ const Index = () => {
         },
         {
             id: 3,
-            name: 'Abakash',
+            name: 'Bhitara Kaatha Darshan',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -30,7 +30,7 @@ const Index = () => {
         },
         {
             id: 4,
-            name: 'Abakash Para Mailam',
+            name: 'Baahaar Kaatha Darshan',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -40,7 +40,7 @@ const Index = () => {
         },
         {
             id: 5,
-            name: 'Sahan Mela or public spectacle',
+            name: 'Bhitara Kaatha Darshan',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -50,7 +50,7 @@ const Index = () => {
         },
         {
             id: 6,
-            name: 'Besha Lagi',
+            name: 'Baahaar Kaatha Darshan',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -60,160 +60,20 @@ const Index = () => {
         },
         {
             id: 7,
-            name: 'Rosa Homo',
+            name: 'Bhitara Kaatha Darshan',
             startTime: '',
             endTime: '',
             startDisabled: false,
             stopDisabled: false,
             elapsedTime: 0,
             totalDuration: 0
-        },
-        {
-            id: 8,
-            name: 'Surya Puja',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 9,
-            name: 'Dwarapala Puja',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 10,
-            name: 'Gopalalavah Bhoga',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 11,
-            name: 'Sakal Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 12,
-            name: 'Mailam and Bhogamandap',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 13,
-            name: 'Madhyan Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 14,
-            name: 'Madhyan Pahuda',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 15,
-            name: 'Pahuda Phitiba and Sandhya Alati',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 16,
-            name: 'Sandhya Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 17,
-            name: 'Sahan Mela after Sandhya Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 18,
-            name: 'Mailam and Chandan Lagi',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 19,
-            name: 'Bada Singhar Besha',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 20,
-            name: 'Bada Singhar Dhupa',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 21,
-            name: 'Khataseja, harp and song, Puspanjali, Pushpalagi, Pahuda, Muda and Shodha',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
+        }
     ];
 
-    const specialNiti = [
+    const specialDarshan = [
         {
             id: 101,
-            name: 'Mahasnahna',
+            name: 'Suna Besha',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -223,7 +83,7 @@ const Index = () => {
         },
         {
             id: 201,
-            name: 'Bada Mahasnahna',
+            name: 'Padma Besha',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -233,47 +93,7 @@ const Index = () => {
         },
         {
             id: 301,
-            name: 'Majana o Ekanta',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        // {
-        //     id: 401,
-        //     name: 'Mailam',
-        //     startTime: '',
-        //     endTime: '',
-        //     startDisabled: false,
-        //     stopDisabled: false,
-        //     elapsedTime: 0,
-        //     totalDuration: 0
-        // },
-        {
-            id: 501,
-            name: 'Nakhetra Bandapana',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 601,
-            name: 'Banakalagi',
-            startTime: '',
-            endTime: '',
-            startDisabled: false,
-            stopDisabled: false,
-            elapsedTime: 0,
-            totalDuration: 0
-        },
-        {
-            id: 701,
-            name: 'Benta',
+            name: 'Gaja Uddharan Besha',
             startTime: '',
             endTime: '',
             startDisabled: false,
@@ -284,12 +104,12 @@ const Index = () => {
     ]
 
     const [activeTab, setActiveTab] = useState('upcoming');
-    const [dailyNiti, setDailyNiti] = useState(initialNiti);
+    const [dailyDarshan, setDailyDarshan] = useState(initialDarshan);
     const [activeIndex, setActiveIndex] = useState(0);
     const [timers, setTimers] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [otherNitiName, setOtherNitiName] = useState('');
+    const [otherDarshanName, setOtherDarshanName] = useState('');
     const navigation = useNavigation();
 
     const handleSelectItem = (item) => {
@@ -300,13 +120,13 @@ const Index = () => {
         console.log("Selected Item:", selectedItem);
         setIsModalVisible(false);
         setSelectedItem(null);
-        setDailyNiti((prv) => (([{ special_niti: true, ...selectedItem }, ...prv])));
+        setDailyDarshan((prv) => (([{ special_darshandarshan: true, ...selectedItem }, ...prv])));
     };
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setDailyNiti(prevNiti =>
-                prevNiti.map(item => {
+            setDailyDarshan(prevDarshan =>
+                prevDarshan.map(item => {
                     if (item.startDisabled && !item.stopDisabled && !item.isPaused) {
                         const elapsed = (Date.now() - item.startTimestamp) / 1000;
                         return { ...item, elapsedTime: Math.round(elapsed) };
@@ -321,8 +141,8 @@ const Index = () => {
 
     const handleStart = id => {
         const startTimestamp = Date.now();
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyDarshan(prevDarshan =>
+            prevDarshan.map(item =>
                 item.id === id
                     ? { ...item, startTimestamp, startDisabled: true, stopDisabled: false, startTime: new Date(startTimestamp).toLocaleTimeString(), isPaused: false }
                     : item
@@ -333,8 +153,8 @@ const Index = () => {
     const handleStop = id => {
         const endTimestamp = Date.now();
         const endTime = new Date(endTimestamp).toLocaleTimeString();
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyDarshan(prevDarshan =>
+            prevDarshan.map(item =>
                 item.id === id
                     ? {
                         ...item,
@@ -350,8 +170,8 @@ const Index = () => {
     };
 
     const handlePause = id => {
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyDarshan(prevDarshan =>
+            prevDarshan.map(item =>
                 item.id === id ? { ...item, isPaused: true } : item
             )
         );
@@ -361,8 +181,8 @@ const Index = () => {
 
     const handleResume = id => {
         const resumeTimestamp = Date.now();
-        setDailyNiti(prevNiti =>
-            prevNiti.map(item =>
+        setDailyDarshan(prevDarshan =>
+            prevDarshan.map(item =>
                 item.id === id ? { ...item, startTimestamp: resumeTimestamp - item.elapsedTime * 1000, isPaused: false } : item
             )
         );
@@ -375,19 +195,18 @@ const Index = () => {
         return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
-    // Separate upcoming and completed items based on activeTab
-    const upcomingNiti = dailyNiti.filter(item => !item.endTime);
-    const completedNiti = dailyNiti.filter(item => item.endTime);
+    const upcomingDarshan = dailyDarshan.filter(item => !item.endTime);
+    const completedDarshan = dailyDarshan.filter(item => item.endTime);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#FFBE00', opacity: isModalVisible ? 0.8 : 1 }}>
             <View style={styles.headerPart}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 10 }}>Daily Niti</Text>
+                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 10 }}>Darshan</Text>
                 </View>
                 <View style={{ marginRight: 10 }}>
                     <TouchableOpacity onPress={() => setIsModalVisible(true)} style={{ backgroundColor: 'green', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6 }}>
-                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Special Niti</Text>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Special Darshan</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -401,20 +220,21 @@ const Index = () => {
             </View>
             <View style={{ backgroundColor: '#FFBE00', width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity onPress={() => setActiveTab('upcoming')} style={{ width: '50%', alignItems: 'center', padding: 10 }}>
-                    <Text style={{ color: activeTab === 'upcoming' ? '#B7070A' : '#444545', fontSize: activeTab === 'upcoming' ? 16 : 15, fontWeight: 'bold' }}>Upcoming Niti</Text>
+                    <Text style={{ color: activeTab === 'upcoming' ? '#B7070A' : '#444545', fontSize: activeTab === 'upcoming' ? 16 : 15, fontWeight: 'bold' }}>Upcoming Darshan</Text>
                     <View style={{ backgroundColor: activeTab === 'upcoming' ? '#B7070A' : '#444545', width: '100%', height: activeTab === 'upcoming' ? 2 : 1, marginTop: 5 }} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setActiveTab('complete')} style={{ width: '50%', alignItems: 'center', padding: 10 }}>
-                    <Text style={{ color: activeTab === 'complete' ? '#B7070A' : '#444545', fontSize: activeTab === 'complete' ? 16 : 15, fontWeight: 'bold' }}>Completed Niti</Text>
+                    <Text style={{ color: activeTab === 'complete' ? '#B7070A' : '#444545', fontSize: activeTab === 'complete' ? 16 : 15, fontWeight: 'bold' }}>Completed Darshan</Text>
                     <View style={{ backgroundColor: activeTab === 'complete' ? '#B7070A' : '#444545', width: '100%', height: activeTab === 'complete' ? 2 : 1, marginTop: 5 }} />
                 </TouchableOpacity>
             </View>
+
             {activeTab === 'upcoming' ? (
                 <ScrollView style={styles.cell}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         scrollEnabled={false}
-                        data={upcomingNiti}
+                        data={upcomingDarshan}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item, index }) => (
                             <View style={styles.smallCell1}>
@@ -452,7 +272,7 @@ const Index = () => {
                                                     <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Resume</Text>
                                                 </TouchableOpacity>
                                             ) : (
-                                                !item.special_niti ?
+                                                !item.special_darshan ?
                                                     <TouchableOpacity
                                                         style={{
                                                             backgroundColor: '#11dcf2',
@@ -517,7 +337,7 @@ const Index = () => {
                 <ScrollView style={styles.cell}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        data={completedNiti.reverse()}
+                        data={completedDarshan.reverse()}
                         scrollEnabled={false}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
@@ -557,7 +377,7 @@ const Index = () => {
                     <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 10 }}>
                         <FlatList
                             showsVerticalScrollIndicator={false}
-                            data={specialNiti}
+                            data={specialDarshan}
                             scrollEnabled={false}
                             keyExtractor={item => item.id.toString()}
                             renderItem={({ item }) => (
@@ -581,8 +401,8 @@ const Index = () => {
                             style={styles.input}
                             placeholder="Enter Niti name"
                             placeholderTextColor="#aaa"
-                            value={otherNitiName}
-                            onChangeText={setOtherNitiName}
+                            value={otherDarshanName}
+                            onChangeText={setOtherDarshanName}
                         />
                         {selectedItem ?
                             <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: 'red', paddingVertical: 10, paddingHorizontal: 10, borderRadius: 5 }}>
@@ -596,24 +416,23 @@ const Index = () => {
                     </View>
                 </View>
             </Modal>
-
             <View style={{ padding: 0, height: 58, borderRadius: 0, backgroundColor: '#f2ebe4', alignItems: 'center' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', margin: 0, paddingBottom: 5 }}>
                     <View style={{ padding: 0, width: '30%' }}>
-                        <View activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+                        <TouchableHighlight onPress={() => navigation.navigate('ManualNitiPage')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
                             <View style={{ alignItems: 'center' }}>
-                                <Image source={require('../../assets/images/panji765.png')} style={{ width: 24, height: 24, marginTop: 12 }} />
-                                <Text style={{ color: '#dc3545', fontSize: 11, fontWeight: '500', height: 17 }}>Niti</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{ padding: 0, width: '30%' }}>
-                        <TouchableHighlight onPressIn={() => navigation.navigate('Darshan')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
-                            <View style={{ alignItems: 'center' }}>
-                                <Image source={require('../../assets/images/darshan.png')} style={{ width: 32, height: 32, tintColor: 'gray', marginTop: 6, }} />
-                                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Darshan</Text>
+                                <Image source={require('../../assets/images/panji765.png')} style={{ width: 24, height: 24, tintColor: 'gray', marginTop: 12 }} />
+                                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Niti</Text>
                             </View>
                         </TouchableHighlight>
+                    </View>
+                    <View style={{ padding: 0, width: '30%' }}>
+                        <View activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+                            <View style={{ alignItems: 'center' }}>
+                                <Image source={require('../../assets/images/darshan.png')} style={{ width: 32, height: 32, marginTop: 6, }} />
+                                <Text style={{ color: '#dc3545', fontSize: 11, fontWeight: '500', height: 17 }}>Darshan</Text>
+                            </View>
+                        </View>
                     </View>
                     <View style={{ padding: 0, width: '30%' }}>
                         <TouchableHighlight onPressIn={() => navigation.navigate('MahaPrasad')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
@@ -691,7 +510,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: '#fff',
         width: '90%',
-        height: 400,
+        height: 300,
         alignSelf: 'center',
         top: 250,
         borderRadius: 10,
