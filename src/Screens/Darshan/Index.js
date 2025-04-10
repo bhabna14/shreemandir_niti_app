@@ -371,9 +371,12 @@ const Index = () => {
                     setIsModalVisible(!isModalVisible);
                 }}>
                 <View style={styles.modalContainer}>
-                    <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => { setIsModalVisible(false); }}>
-                        <Ionicons name="close" color={'#000'} size={30} />
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={{ color: '#000', fontSize: 20, fontWeight: '600' }}>Select Special Darshan</Text>
+                        <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => { setIsModalVisible(false); }}>
+                            <Ionicons name="close" color={'#000'} size={30} />
+                        </TouchableOpacity>
+                    </View>
                     <View style={{ flex: 1, justifyContent: 'flex-start', marginTop: 10 }}>
                         <FlatList
                             showsVerticalScrollIndicator={false}
