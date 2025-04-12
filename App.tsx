@@ -19,7 +19,7 @@ import MahaPrasad from './src/Screens/MahaPrasad/Index'
 
 const Stack = createNativeStackNavigator()
 
-export const base_url = "http://panji.mandirparikrama.com/"
+export const base_url = "http://temple.mandirparikrama.com/"
 
 const App = () => {
 
@@ -30,6 +30,7 @@ const App = () => {
     try {
       const token = await AsyncStorage.getItem('storeAccesstoken');
       setAccess_token(token || "");
+      console.log("Access Token: ", token || "Token not found");
     } catch (error) {
       console.error('Failed to retrieve access token:', error);
     }
@@ -47,11 +48,11 @@ const App = () => {
       <StatusBar backgroundColor="#B7070A" barStyle="light-content" />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {showSplash ? (<Stack.Screen name="SplashScreen" component={SplashScreen} options={{ presentation: 'modal', animationTypeForReplace: 'push', animation: 'slide_from_right' }} />) : null}
-        {access_token ? <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> : <Stack.Screen name="Login" component={Login} />}
-        {!access_token ? <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> : <Stack.Screen name="Login" component={Login} />}
-        {/* <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> */}
+        {access_token ? <Stack.Screen name="Home" component={Home} /> : <Stack.Screen name="Login" component={Login} />}
+        {!access_token ? <Stack.Screen name="Home" component={Home} /> : <Stack.Screen name="Login" component={Login} />}
         <Stack.Screen name="OtpVerify" component={OtpVerify} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} />
+        {/* <Stack.Screen name="Home" component={Home} /> */}
         <Stack.Screen name="Darshan" component={Darshan} />
         <Stack.Screen name="MahaPrasad" component={MahaPrasad} />
         {/* <Stack.Screen name="ManualNitiPage" component={ManualNitiPage} /> */}

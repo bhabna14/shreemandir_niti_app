@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import DrawerModal from '../../Components/DrawerModal';
 
 const Index = () => {
 
@@ -103,6 +105,8 @@ const Index = () => {
         },
     ]
 
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const closeDrawer = () => { setIsDrawerOpen(false); };
     const [activeTab, setActiveTab] = useState('upcoming');
     const [dailyDarshan, setDailyDarshan] = useState(initialDarshan);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -200,9 +204,13 @@ const Index = () => {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#FFBE00', opacity: isModalVisible ? 0.8 : 1 }}>
+            <DrawerModal visible={isDrawerOpen} navigation={navigation} onClose={closeDrawer} />
             <View style={styles.headerPart}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 10 }}>Darshan</Text>
+                    <TouchableOpacity onPress={() => setIsDrawerOpen(true)} style={{ marginHorizontal: 10 }}>
+                        <FontAwesome5 name="bars" size={23} color="#fff" />
+                    </TouchableOpacity>
+                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600' }}>Darshan</Text>
                 </View>
                 <View style={{ marginRight: 10 }}>
                     <TouchableOpacity onPress={() => setIsModalVisible(true)} style={{ backgroundColor: 'green', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6 }}>
@@ -422,7 +430,7 @@ const Index = () => {
             <View style={{ padding: 0, height: 58, borderRadius: 0, backgroundColor: '#f2ebe4', alignItems: 'center' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', margin: 0, paddingBottom: 5 }}>
                     <View style={{ padding: 0, width: '30%' }}>
-                        <TouchableHighlight onPress={() => navigation.navigate('ManualNitiPage')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+                        <TouchableHighlight onPress={() => navigation.navigate('Home')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
                             <View style={{ alignItems: 'center' }}>
                                 <Image source={require('../../assets/images/panji765.png')} style={{ width: 24, height: 24, tintColor: 'gray', marginTop: 12 }} />
                                 <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Niti</Text>

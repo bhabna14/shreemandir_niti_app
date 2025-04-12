@@ -17,13 +17,13 @@ const Login = () => {
     }, [phoneNumber]);
 
     const handleLogin = async () => {
-        // setIsLoading(true);
-        navigation.navigate('OtpVerify');
-        return;
+        setIsLoading(true);
+        // navigation.navigate('OtpVerify');
+        // return;
 
         try {
-            // const phoneRegex = /^\+91\d{10}$/;
-            if (phoneNumber.length !== 10) {
+            const phoneRegex = /^\d{10}$/; // Regex to match a 10-digit phone number
+            if (phoneNumber.length !== 10 || !phoneRegex.test(phoneNumber)) {
                 setErrorMessage('Please enter a valid 10-digit phone number.');
                 setShowError(true);
                 setTimeout(() => {
@@ -36,7 +36,7 @@ const Login = () => {
             const formData = new FormData();
             formData.append('phone', phoneNumber);
 
-            const response = await fetch(base_url + 'api/user-send-otp', {
+            const response = await fetch(base_url + 'api/admin/send-otp', {
                 method: 'POST',
                 body: formData,
             });
@@ -45,12 +45,13 @@ const Login = () => {
             if (response.ok) {
                 console.log('OTP sent successfully', data);
                 let phone_orderId = {
-                    phone: phoneNumber,
+                    phone: data.phone,
                     order_id: data.order_id
                 }
                 navigation.navigate('OtpVerify', phone_orderId);
             } else {
                 // Handle error response
+                console.log("Error while sending OTP", data);
                 setErrorMessage(data.message || 'Failed to send OTP. Please try again.');
                 setShowError(true);
                 setTimeout(() => {

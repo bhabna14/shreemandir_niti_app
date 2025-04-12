@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import DrawerModal from '../../Components/DrawerModal';
 
 const Index = () => {
 
@@ -283,6 +285,8 @@ const Index = () => {
         },
     ]
 
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const closeDrawer = () => { setIsDrawerOpen(false); };
     const [activeTab, setActiveTab] = useState('upcoming');
     const [dailyNiti, setDailyNiti] = useState(initialNiti);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -380,10 +384,14 @@ const Index = () => {
     const completedNiti = dailyNiti.filter(item => item.endTime);
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#FFBE00', opacity: isModalVisible ? 0.8 : 1 }}>
+        <View style={{ flex: 1, backgroundColor: '#FFBE00', opacity: isModalVisible && isDrawerOpen ? 0.8 : 1 }}>
+            <DrawerModal visible={isDrawerOpen} navigation={navigation} onClose={closeDrawer} />
             <View style={styles.headerPart}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 10 }}>Daily Niti</Text>
+                    <TouchableOpacity onPress={() => setIsDrawerOpen(true)} style={{ marginHorizontal: 10 }}>
+                        <FontAwesome5 name="bars" size={23} color="#fff" />
+                    </TouchableOpacity>
+                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600' }}>Daily Niti</Text>
                 </View>
                 <View style={{ marginRight: 10 }}>
                     <TouchableOpacity onPress={() => setIsModalVisible(true)} style={{ backgroundColor: 'green', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6 }}>
@@ -391,8 +399,29 @@ const Index = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={styles.imageContainer}>
+            {/* <View style={styles.imageContainer}>
                 <Image source={require('../../assets/images/3rathas.jpg')} style={styles.image} />
+            </View> */}
+            <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 15, justifyContent: 'center', width: '100%' }}>
+                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ width: '95%' }}>
+                        <Text style={{ fontSize: 20, fontFamily: 'FiraSans-Light', color: '#341551' }}>Dwara Phita & Mangala Alati</Text>
+                        <View style={{ backgroundColor: '#fa0000', width: 80, height: 1.5, marginVertical: 8 }}></View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <Ionicons name="calendar-outline" size={16} color="#fa0000" />
+                                <Text style={{ color: '#979998', fontFamily: 'FiraSans-Medium', marginLeft: 5 }}>4th April</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 5, marginLeft: 20 }}>
+                                <Ionicons name="time-outline" size={16} color="#fa0000" />
+                                <Text style={{ color: '#979998', fontFamily: 'FiraSans-Medium', marginLeft: 5 }}>5 AM or earlier</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{ width: '10%' }}>
+                        <Ionicons name="chevron-forward" size={24} color="#fa0000" />
+                    </View>
+                </View>
             </View>
             <View style={{ backgroundColor: '#FFBE00', paddingTop: 1 }}>
                 <View style={{ backgroundColor: '#B7070A', paddingVertical: 10, justifyContent: 'center', alignItems: 'center' }}>

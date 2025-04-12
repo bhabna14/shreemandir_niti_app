@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DeviceInfo from 'react-native-device-info';
 import { base_url } from '../../../App';
 
 const OtpVerify = (props) => {
@@ -20,11 +19,7 @@ const OtpVerify = (props) => {
     }, [otp]);
 
     const handleOtpVerification = async () => {
-        let platformName = DeviceInfo.getSystemName();
-        // let deviceModel = DeviceInfo.getModel();
-        // setIsLoading(true);
-        navigation.replace('ManualNitiPage');
-        return;
+        setIsLoading(true);
 
         try {
             if (otp === "" || otp.length != 6) {
@@ -41,12 +36,11 @@ const OtpVerify = (props) => {
             formData.append('orderId', props.route.params.order_id);
             formData.append('otp', otp);
             formData.append('phoneNumber', props.route.params.phone);
-            formData.append('platform', platformName);
 
             // console.log("formData", formData);
             // return;
 
-            const response = await fetch(base_url + "api/user-verify-otp", {
+            const response = await fetch(base_url + "api/admin/verify-otp", {
                 method: 'POST',
                 body: formData,
             });
@@ -57,6 +51,7 @@ const OtpVerify = (props) => {
                 navigation.replace('ManualNitiPage');
             } else {
                 // Handle error response
+                console.log("Error while sending OTP", data);
                 setErrorMessage(data.message || 'Failed to Login. Please try again.');
                 setShowError(true);
                 setTimeout(() => {

@@ -1,29 +1,57 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, ScrollView, Modal, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Image, FlatList, ScrollView, Modal, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { base_url } from '../../../App';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
+import DrawerModal from '../../Components/DrawerModal';
 
 const Index = () => {
 
+  const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [activeTab, setActiveTab] = useState('upcoming');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const closeDrawer = () => { setIsDrawerOpen(false); };
 
   const [spinner, setSpinner] = useState(false);
   const [allNiti, setAllNiti] = useState([]);
   const [completedNiti, setCompletedNiti] = useState([]);
   const [specialNiti, setSpecialNiti] = useState([]);
-  const [timers, setTimers] = useState({});
-  const [elapsedTime, setElapsedTime] = useState({});
+  const [runningTimers, setRunningTimers] = useState({});
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const updatedTimers = {};
+  
+      allNiti.forEach(item => {
+        if (item.start_time && item.niti_status === "Started") {
+          const start = moment(item.start_time, "HH:mm:ss");
+          const now = moment();
+          const duration = moment.duration(now.diff(start));
+  
+          const hours = String(duration.hours()).padStart(2, '0');
+          const minutes = String(duration.minutes()).padStart(2, '0');
+          const seconds = String(duration.seconds()).padStart(2, '0');
+  
+          updatedTimers[item.niti_id] = `${hours}:${minutes}:${seconds}`;
+        }
+      });
+  
+      setRunningTimers(updatedTimers);
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, [allNiti]);
 
   const getAllNiti = async () => {
     try {
       setSpinner(true);
-      const response = await fetch(base_url + 'api/manageniti', {
+      const response = await fetch(base_url + 'api/manage-niti', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -31,16 +59,10 @@ const Index = () => {
         },
       });
       const responseData = await response.json();
-      if (responseData.status === 200) {
+      if (responseData.status) {
         setSpinner(false);
-        const nonCompletedNiti = responseData.data.filter(item => item.niti_status !== 'completed');
-        setAllNiti(nonCompletedNiti);
-
-        const completedNiti = responseData.data.filter(item => item.niti_status === 'completed');
-        setCompletedNiti(completedNiti);
-
-        const specialNiti = responseData.data.filter(item => item.niti_type === 'special');
-        setSpecialNiti(specialNiti);
+        setAllNiti(responseData.data);
+        // console.log("All Niti", responseData.data);
       }
     } catch (error) {
       console.log(error);
@@ -63,9 +85,6 @@ const Index = () => {
       const responseData = await response.json();
       if (responseData.status === 200) {
         getAllNiti();
-        const startTime = Date.now();
-        setTimers(prevTimers => ({ ...prevTimers, [id]: setInterval(() => updateElapsedTime(id, startTime), 1000) }));
-        setElapsedTime(prevElapsedTime => ({ ...prevElapsedTime, [id]: 0 }));
       } else {
         console.log("Error", responseData.msg);
       }
@@ -89,7 +108,6 @@ const Index = () => {
       const responseData = await response.json();
       if (responseData.status === 200) {
         getAllNiti();
-        clearInterval(timers[id]);
       } else {
         console.log("Error", responseData.msg);
       }
@@ -113,8 +131,6 @@ const Index = () => {
       const responseData = await response.json();
       if (responseData.status === 200) {
         getAllNiti();
-        const startTime = Date.now() - elapsedTime[id];
-        setTimers(prevTimers => ({ ...prevTimers, [id]: setInterval(() => updateElapsedTime(id, startTime), 1000) }));
       } else {
         console.log("Error", responseData.msg);
       }
@@ -140,18 +156,12 @@ const Index = () => {
       const responseData = await response.json();
       if (responseData.status === 200) {
         getAllNiti();
-        clearInterval(timers[id]);
-        setElapsedTime(prevElapsedTime => ({ ...prevElapsedTime, [id]: 0 }));
       } else {
         console.log("Error", responseData.msg);
       }
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const updateElapsedTime = (id, startTime) => {
-    setElapsedTime(prevElapsedTime => ({ ...prevElapsedTime, [id]: Date.now() - startTime }));
   };
 
   const handleSubmitSpecialNiti = () => {
@@ -173,26 +183,47 @@ const Index = () => {
     if (isFocused) {
       getAllNiti();
     }
-
-    return () => {
-      Object.values(timers).forEach(clearInterval);
-    };
   }, [isFocused]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#FFBE00', opacity: isModalVisible ? 0.8 : 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#FFBE00', opacity: isModalVisible && isDrawerOpen ? 0.8 : 1 }}>
+      <DrawerModal visible={isDrawerOpen} navigation={navigation} onClose={closeDrawer} />
       <View style={styles.headerPart}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 10 }}>Daily Neeti</Text>
+          <TouchableOpacity onPress={() => setIsDrawerOpen(true)} style={{ marginHorizontal: 10 }}>
+            <FontAwesome5 name="bars" size={23} color="#fff" />
+          </TouchableOpacity>
+          <Text style={{ color: '#fff', fontSize: 18, fontWeight: '600' }}>Daily Niti</Text>
         </View>
         <View style={{ marginRight: 10 }}>
           <TouchableOpacity onPress={() => setIsModalVisible(true)} style={{ backgroundColor: 'green', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6 }}>
-            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Special Neeti</Text>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Special Niti</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.imageContainer}>
+      {/* <View style={styles.imageContainer}>
         <Image source={require('../../assets/images/3rathas.jpg')} style={styles.image} />
+      </View> */}
+      <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 15, justifyContent: 'center', width: '100%' }}>
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ width: '95%' }}>
+            <Text style={{ fontSize: 20, fontFamily: 'FiraSans-Light', color: '#341551' }}>Dwara Phita & Mangala Alati</Text>
+            <View style={{ backgroundColor: '#fa0000', width: 80, height: 1.5, marginVertical: 8 }}></View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="calendar-outline" size={16} color="#fa0000" />
+                <Text style={{ color: '#979998', fontFamily: 'FiraSans-Medium', marginLeft: 5 }}>4th April</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 5, marginLeft: 20 }}>
+                <Ionicons name="time-outline" size={16} color="#fa0000" />
+                <Text style={{ color: '#979998', fontFamily: 'FiraSans-Medium', marginLeft: 5 }}>5 AM or earlier</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{ width: '10%' }}>
+            <Ionicons name="chevron-forward" size={24} color="#fa0000" />
+          </View>
+        </View>
       </View>
       <View style={{ backgroundColor: '#FFBE00', paddingTop: 1 }}>
         <View style={{ backgroundColor: '#B7070A', paddingVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
@@ -215,24 +246,24 @@ const Index = () => {
             showsVerticalScrollIndicator={false}
             scrollEnabled={false}
             data={allNiti}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.niti_id}
             renderItem={({ item, index }) => (
               <View style={styles.smallCell1}>
                 <View style={{ width: '60%' }}>
-                  {item.niti_status === null ? (
+                  {item.niti_status === "Upcoming" ? (
                     <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textTransform: 'capitalize' }}>
                       {item.niti_name}
                     </Text>
                   ) : (
                     <View style={{ width: '100%' }}>
                       <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textTransform: 'capitalize' }}>{item.niti_name}</Text>
-                      <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Start Time: {moment(item.start_time).format("h:mm:ss a")}</Text>
-                      {/* <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Running Time: {moment.utc(elapsedTime[item.id]).format("HH:mm:ss")}</Text> */}
+                      <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Start Time: {moment(item.start_time, "HH:mm:ss").format("HH:mm")}</Text>
+                      <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Running Time: {runningTimers[item.niti_id] || '00:00:00'}</Text>
                     </View>
                   )}
                 </View>
                 <View style={{ width: '40%', alignItems: 'center' }}>
-                  {item.niti_status === null ? (
+                  {item.niti_status === "Upcoming" &&
                     <TouchableOpacity
                       style={{
                         backgroundColor: 'green',
@@ -244,7 +275,8 @@ const Index = () => {
                     >
                       <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Start</Text>
                     </TouchableOpacity>
-                  ) : (
+                  }
+                  {item.niti_status === "Started" &&
                     <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                       {item.niti_status === 'paused' ? (
                         <TouchableOpacity
@@ -283,7 +315,7 @@ const Index = () => {
                         <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
                       </TouchableOpacity>
                     </View>
-                  )}
+                  }
                 </View>
               </View>
             )}
@@ -342,6 +374,35 @@ const Index = () => {
           </View>
         </View>
       </Modal>
+
+      <View style={{ padding: 0, height: 58, borderRadius: 0, backgroundColor: '#f2ebe4', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', margin: 0, paddingBottom: 5 }}>
+          <View style={{ padding: 0, width: '30%' }}>
+            <View activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+              <View style={{ alignItems: 'center' }}>
+                <Image source={require('../../assets/images/panji765.png')} style={{ width: 24, height: 24, marginTop: 12 }} />
+                <Text style={{ color: '#dc3545', fontSize: 11, fontWeight: '500', height: 17 }}>Niti</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{ padding: 0, width: '30%' }}>
+            <TouchableHighlight onPressIn={() => navigation.navigate('Darshan')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+              <View style={{ alignItems: 'center' }}>
+                <Image source={require('../../assets/images/darshan.png')} style={{ width: 32, height: 32, tintColor: 'gray', marginTop: 6, }} />
+                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Darshan</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View style={{ padding: 0, width: '30%' }}>
+            <TouchableHighlight onPressIn={() => navigation.navigate('MahaPrasad')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
+              <View style={{ alignItems: 'center', marginTop: 3 }}>
+                <Image source={require('../../assets/images/mahaprasadad32412.png')} style={{ width: 34, height: 34, tintColor: 'gray' }} />
+                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Maha Prasad</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
