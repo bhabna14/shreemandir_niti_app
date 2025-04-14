@@ -48,7 +48,7 @@ const OtpVerify = (props) => {
             if (response.ok) {
                 console.log('Login successfully', data);
                 await AsyncStorage.setItem('storeAccesstoken', data.token);
-                navigation.replace('ManualNitiPage');
+                navigation.replace('Home');
             } else {
                 // Handle error response
                 console.log("Error while sending OTP", data);
