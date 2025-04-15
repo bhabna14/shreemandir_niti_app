@@ -246,6 +246,7 @@ const Index = () => {
     const selectedNiti = specialNiti.find(item => item.id === selectedItem);
     const payload = {
       niti_name: selectedNiti?.niti_name || otherSpecialNiti,
+      niti_id: selectedNiti?.niti_id || null,
     };
 
     try {
@@ -452,42 +453,58 @@ const Index = () => {
                       }
                       {(item.niti_status === "Started" || item.niti_status === "Paused") &&
                         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                          {item.niti_status === 'Paused' ? (
+                          {item.niti_type === "special" ? (
                             <TouchableOpacity
                               style={{
-                                backgroundColor: '#11dcf2',
+                                backgroundColor: 'red',
                                 paddingVertical: 7,
-                                paddingHorizontal: 7,
+                                paddingHorizontal: 10,
                                 borderRadius: 5
                               }}
-                              onPress={() => showConfirmation('resume', item.niti_id)}
+                              onPress={() => showConfirmation('stop', item.niti_id)}
                             >
-                              <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Resume</Text>
+                              <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
                             </TouchableOpacity>
                           ) : (
-                            <TouchableOpacity
-                              style={{
-                                backgroundColor: '#11dcf2',
-                                paddingVertical: 7,
-                                paddingHorizontal: 7,
-                                borderRadius: 5
-                              }}
-                              onPress={() => showConfirmation('pause', item.niti_id)}
-                            >
-                              <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Pause</Text>
-                            </TouchableOpacity>
+                            <>
+                              {item.niti_status === 'Paused' ? (
+                                <TouchableOpacity
+                                  style={{
+                                    backgroundColor: '#11dcf2',
+                                    paddingVertical: 7,
+                                    paddingHorizontal: 7,
+                                    borderRadius: 5
+                                  }}
+                                  onPress={() => showConfirmation('resume', item.niti_id)}
+                                >
+                                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Resume</Text>
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  style={{
+                                    backgroundColor: '#11dcf2',
+                                    paddingVertical: 7,
+                                    paddingHorizontal: 7,
+                                    borderRadius: 5
+                                  }}
+                                  onPress={() => showConfirmation('pause', item.niti_id)}
+                                >
+                                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Pause</Text>
+                                </TouchableOpacity>
+                              )}
+                              <TouchableOpacity
+                                style={{
+                                  backgroundColor: 'red',
+                                  paddingVertical: 7,
+                                  paddingHorizontal: 10,
+                                  borderRadius: 5
+                                }}
+                                onPress={() => showConfirmation('stop', item.niti_id)}
+                              >
+                                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
+                              </TouchableOpacity>
+                            </>
                           )}
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: 'red',
-                              paddingVertical: 7,
-                              paddingHorizontal: 10,
-                              borderRadius: 5
-                            }}
-                            onPress={() => showConfirmation('stop', item.niti_id)}
-                          >
-                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
-                          </TouchableOpacity>
                         </View>
                       }
                     </View>
@@ -506,8 +523,8 @@ const Index = () => {
                   <View style={styles.smallCell1}>
                     <View style={{ width: '60%' }}>
                       <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textTransform: 'capitalize' }}>{item.niti_name}</Text>
-                      <Text style={{ color: '#000', fontSize: 12, fontWeight: '400' }}>Start Time: {moment(item.start_time, "HH:mm:ss").format("HH:mm")}</Text>
-                      <Text style={{ color: '#000', fontSize: 12, fontWeight: '400' }}>End Time: {moment(item.end_time, "HH:mm:ss").format("HH:mm")}</Text>
+                      <Text style={{ color: '#000', fontSize: 12, fontWeight: '400' }}>Start Time: {moment(item.start_time, "HH:mm:ss").format("HH:mm:ss")}</Text>
+                      <Text style={{ color: '#000', fontSize: 12, fontWeight: '400' }}>End Time: {moment(item.end_time, "HH:mm:ss").format("HH:mm:ss")}</Text>
                       {(() => {
                         const start = moment(item.start_time, "HH:mm:ss");
                         const end = moment(item.end_time, "HH:mm:ss");
