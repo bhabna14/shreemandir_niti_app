@@ -280,6 +280,35 @@ const Index = () => {
     }
   };
 
+  const endNiti = async () => {
+    const token = await AsyncStorage.getItem('storeAccesstoken');
+    try {
+      const response = await fetch(base_url + 'api/update-upcoming', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      const responseData = await response.json();
+      if (responseData.status) {
+        getAllNiti();
+        getCompletedNiti();
+        // console.log("Niti ended successfully", responseData);
+        ToastAndroid.show('Niti ended successfully', ToastAndroid.SHORT);
+      } else {
+        // console.log("Error", responseData);
+        ToastAndroid.show('Error ending Niti', ToastAndroid.SHORT);
+      }
+    }
+    catch (error) {
+      // console.log("Error", error);
+      ToastAndroid.show('Error ending Niti', ToastAndroid.SHORT);
+    }
+  };
+
   useEffect(() => {
     if (isFocused) {
       getAllNiti();
@@ -511,6 +540,22 @@ const Index = () => {
                   </View>
                 )}
               />
+              {allNiti.length === 0 && (
+                <View style={{ alignItems: 'center', marginTop: 20 }}>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#B7070A',
+                      paddingVertical: 12,
+                      paddingHorizontal: 30,
+                      borderRadius: 8,
+                      elevation: 3
+                    }}
+                    onPress={() => endNiti()}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>End of Niti</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </ScrollView>
           ) : (
             <ScrollView style={styles.cell}>
