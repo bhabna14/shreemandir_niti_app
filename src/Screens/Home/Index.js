@@ -310,9 +310,44 @@ const Index = () => {
   };
 
   const [collapseNiti, setCollapseNiti] = useState(false);
+  const [subNitiName, setSubNitiName] = useState('');
 
   const collapseSubNiti = (id) => {
     setCollapseNiti(prev => prev === id ? false : id);
+  };
+
+  const addSubNiti = async (id) => {
+    const token = await AsyncStorage.getItem('storeAccesstoken');
+    try {
+      const response = await fetch(base_url + 'api/sub-niti/add', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          sub_niti_name: subNitiName,
+          niti_id: id,
+        }),
+      });
+
+      const responseData = await response.json();
+      if (responseData.status) {
+        getAllNiti();
+        getCompletedNiti();
+        setSubNitiName('');
+        setCollapseNiti(false);
+        console.log("Sub Niti added successfully", responseData);
+        ToastAndroid.show('Sub Niti added successfully', ToastAndroid.SHORT);
+      } else {
+        console.log("Error", responseData);
+        ToastAndroid.show('Error adding Sub Niti', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.show('Error adding Sub Niti', ToastAndroid.SHORT);
+    }
   };
 
   const startSubNiti = async (id) => {
@@ -488,8 +523,8 @@ const Index = () => {
                 data={allNiti}
                 keyExtractor={item => item.niti_id}
                 renderItem={({ item, index }) => (
-                  <>
-                    <TouchableOpacity style={styles.smallCell1} onPress={() => collapseSubNiti(item.niti_id)}>
+                  <View style={styles.smallCell1}>
+                    <TouchableOpacity onPress={() => collapseSubNiti(item.niti_id)} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                       <View style={{ width: '60%' }}>
                         {item.niti_status === "Upcoming" ? (
                           <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textTransform: 'capitalize' }}>
@@ -500,11 +535,14 @@ const Index = () => {
                             <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textTransform: 'capitalize' }}>{item.niti_name}</Text>
                             <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Start Time: {moment(item.start_time, "HH:mm:ss").format("HH:mm")}</Text>
                             <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Running Time: {runningTimers[item.niti_id] || '00:00:00'}</Text>
+                            {item.running_sub_niti && item.running_sub_niti.sub_niti_name &&
+                              <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Current Sub Niti: <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{item.running_sub_niti.sub_niti_name}</Text></Text>
+                            }
                           </View>
                         )}
                       </View>
                       <View style={{ width: '40%', alignItems: 'center' }}>
-                        {item.niti_status === "Upcoming" &&
+                        {item.niti_status === "Upcoming" && index === 0 &&
                           <TouchableOpacity
                             style={{
                               backgroundColor: index === 0 ? 'green' : '#ccc',
@@ -518,65 +556,109 @@ const Index = () => {
                             <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Start</Text>
                           </TouchableOpacity>
                         }
-                        {(item.niti_status === "Started" || item.niti_status === "Paused") &&
-                          <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                            {item.niti_type === "special" ? (
-                              <TouchableOpacity
-                                style={{
-                                  backgroundColor: 'red',
-                                  paddingVertical: 7,
-                                  paddingHorizontal: 10,
-                                  borderRadius: 5
-                                }}
-                                onPress={() => showConfirmation('stop', item.niti_id)}
-                              >
-                                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
-                              </TouchableOpacity>
-                            ) : (
-                              <>
-                                {item.niti_status === 'Paused' ? (
+                        {index === 0 ? (
+                          <>
+                            {(item.niti_status === "Started" || item.niti_status === "Paused") &&
+                              <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
+                                {item.niti_type === "special" ? (
                                   <TouchableOpacity
                                     style={{
-                                      backgroundColor: '#11dcf2',
+                                      backgroundColor: '#B7070A',
                                       paddingVertical: 7,
-                                      paddingHorizontal: 7,
+                                      paddingHorizontal: 10,
                                       borderRadius: 5
                                     }}
-                                    onPress={() => showConfirmation('resume', item.niti_id)}
+                                    onPress={() => showConfirmation('stop', item.niti_id)}
                                   >
-                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Resume</Text>
+                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
                                   </TouchableOpacity>
                                 ) : (
-                                  <TouchableOpacity
-                                    style={{
-                                      backgroundColor: '#11dcf2',
-                                      paddingVertical: 7,
-                                      paddingHorizontal: 7,
-                                      borderRadius: 5
-                                    }}
-                                    onPress={() => showConfirmation('pause', item.niti_id)}
-                                  >
-                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Pause</Text>
-                                  </TouchableOpacity>
+                                  <>
+                                    {item.niti_status === 'Paused' ? (
+                                      <TouchableOpacity
+                                        style={{
+                                          backgroundColor: '#11dcf2',
+                                          paddingVertical: 7,
+                                          paddingHorizontal: 7,
+                                          borderRadius: 5
+                                        }}
+                                        onPress={() => showConfirmation('resume', item.niti_id)}
+                                      >
+                                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Resume</Text>
+                                      </TouchableOpacity>
+                                    ) : (
+                                      <TouchableOpacity
+                                        style={{
+                                          backgroundColor: '#11dcf2',
+                                          paddingVertical: 7,
+                                          paddingHorizontal: 7,
+                                          borderRadius: 5
+                                        }}
+                                        onPress={() => showConfirmation('pause', item.niti_id)}
+                                      >
+                                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Pause</Text>
+                                      </TouchableOpacity>
+                                    )}
+                                    <TouchableOpacity
+                                      style={{
+                                        backgroundColor: '#B7070A',
+                                        paddingVertical: 7,
+                                        paddingHorizontal: 10,
+                                        borderRadius: 5
+                                      }}
+                                      onPress={() => showConfirmation('stop', item.niti_id)}
+                                    >
+                                      <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
+                                    </TouchableOpacity>
+                                  </>
                                 )}
-                                <TouchableOpacity
-                                  style={{
-                                    backgroundColor: 'red',
-                                    paddingVertical: 7,
-                                    paddingHorizontal: 10,
-                                    borderRadius: 5
-                                  }}
-                                  onPress={() => showConfirmation('stop', item.niti_id)}
-                                >
-                                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Stop</Text>
-                                </TouchableOpacity>
-                              </>
-                            )}
-                          </View>
-                        }
+                              </View>
+                            }
+                          </>
+                        ) : (
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: index === 0 ? 'green' : '#ccc',
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                              borderRadius: 5,
+                            }}
+                            disabled={index !== 0}
+                            onPress={() => showConfirmation('start', item.niti_id)}
+                          >
+                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Start</Text>
+                          </TouchableOpacity>
+                        )}
                       </View>
                     </TouchableOpacity>
-                    {collapseNiti === item.niti_id && item.sub_nitis.length > 0 && (
+                    {/* Sub Niti Text Area Input Box */}
+                    {collapseNiti === item.niti_id && item.niti_type === "daily" && (item.niti_status === "Started" || item.niti_status === "Paused") && (
+                      <View style={{ marginTop: 10, paddingHorizontal: 10 }}>
+                        <TextInput
+                          placeholder="Add Sub Niti..."
+                          placeholderTextColor="#888"
+                          value={subNitiName}
+                          onChangeText={text => setSubNitiName(text)}
+                          multiline={true}
+                          numberOfLines={4}
+                          style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 10, paddingHorizontal: 15, paddingVertical: 10, fontSize: 16, color: '#000', textAlignVertical: 'top' }}
+                        />
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: '#B7070A',
+                            paddingVertical: 7,
+                            paddingHorizontal: 10,
+                            borderRadius: 5,
+                            marginTop: 10,
+                          }}
+                          onPress={() => addSubNiti(item.niti_id)}
+                        >
+                          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600', textAlign: 'center' }}>Add Sub Niti</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    {/* Sub Niti List */}
+                    {/* {collapseNiti === item.niti_id && item.sub_nitis.length > 0 && (
                       item.sub_nitis
                         .filter(subItem => subItem.status === "Upcoming" || subItem.status === "Running")
                         .map((subItem) => (
@@ -628,8 +710,8 @@ const Index = () => {
                             </View>
                           </View>
                         ))
-                    )}
-                  </>
+                    )} */}
+                  </View>
                 )}
               />
               {allNiti.length === 0 && (
@@ -877,9 +959,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 15,
     padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.5,
