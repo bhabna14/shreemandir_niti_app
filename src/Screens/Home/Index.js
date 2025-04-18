@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Image, FlatList, ScrollView, Modal, Alert, TextInput, ToastAndroid } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView, Modal, TextInput, ToastAndroid, RefreshControl } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,17 +14,28 @@ const Index = () => {
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState('upcoming');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const closeDrawer = () => { setIsDrawerOpen(false); };
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      getAllNiti();
+      getCompletedNiti();
+      console.log("Refreshing Successful");
+    }, 2000);
+  }, []);
+
   const [spinner, setSpinner] = useState(false);
   const [allNiti, setAllNiti] = useState([]);
   const [completedNiti, setCompletedNiti] = useState([]);
-  const [specialNiti, setSpecialNiti] = useState([]);
-  const [otherSpecialNiti, setOtherSpecialNiti] = useState('');
+  const [otherNiti, setOtherNiti] = useState([]);
+  const [otherNitiText, setOtherNitiText] = useState('');
   const [runningTimers, setRunningTimers] = useState({});
 
   useEffect(() => {
@@ -92,9 +103,9 @@ const Index = () => {
     }
   };
 
-  const getSpecialNiti = async () => {
+  const getOtherNiti = async () => {
     try {
-      const response = await fetch(base_url + 'api/special-niti', {
+      const response = await fetch(base_url + 'api/other-niti', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -103,8 +114,8 @@ const Index = () => {
       });
       const responseData = await response.json();
       if (responseData.status) {
-        setSpecialNiti(responseData.data);
-        // console.log("Special Niti", responseData.data);
+        setOtherNiti(responseData.data);
+        // console.log("Other Niti", responseData.data);
       } else {
         console.log("Error", responseData);
       }
@@ -241,16 +252,16 @@ const Index = () => {
     }
   };
 
-  const handleSubmitSpecialNiti = async () => {
+  const handleSubmitOtherNiti = async () => {
     const token = await AsyncStorage.getItem('storeAccesstoken');
-    const selectedNiti = specialNiti.find(item => item.id === selectedItem);
+    const selectedNiti = otherNiti.find(item => item.id === selectedItem);
     const payload = {
-      niti_name: selectedNiti?.niti_name || otherSpecialNiti,
+      niti_name: selectedNiti?.niti_name || otherNitiText,
       niti_id: selectedNiti?.niti_id || null,
     };
 
     try {
-      const response = await fetch(`${base_url}api/save-special-niti`, {
+      const response = await fetch(`${base_url}api/save-other-niti`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -267,8 +278,8 @@ const Index = () => {
         ToastAndroid.show('Special Niti added successfully', ToastAndroid.SHORT);
         setIsModalVisible(false);
         setSelectedItem(null);
-        setOtherSpecialNiti('');
-        getSpecialNiti();
+        setOtherNitiText('');
+        getOtherNiti();
         getAllNiti();
       } else {
         ToastAndroid.show(data.message || 'Failed to add special Niti', ToastAndroid.SHORT);
@@ -381,11 +392,86 @@ const Index = () => {
     }
   };
 
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [editSubItem, setEditSubItem] = useState(null);
+  const [visibleConfirmSubNitiDelete, setVisibleConfirmSubNitiDelete] = useState(false);
+
+  const editModal = (item) => {
+    setEditSubItem(item);
+    setIsEditModalVisible(true);
+  }
+
+  const editSubNiti = async () => {
+    // console.log("object", editSubItem);
+    // return;
+    const token = await AsyncStorage.getItem('storeAccesstoken');
+    try {
+      const response = await fetch(base_url + 'api/update-sub-niti-name/' + editSubItem.sub_niti_id, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          sub_niti_name: editSubItem.sub_niti_name,
+        }),
+      });
+
+      const responseData = await response.json();
+      if (responseData.status) {
+        getAllNiti();
+        getCompletedNiti();
+        console.log("Sub Niti edited successfully", responseData);
+        ToastAndroid.show('Sub Niti edited successfully', ToastAndroid.SHORT);
+      } else {
+        console.log("Error", responseData);
+        ToastAndroid.show('Error editing Sub Niti', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log("Error", error);
+      ToastAndroid.show('Error editing Sub Niti', ToastAndroid.SHORT);
+    }
+  };
+
+  const confirmDeleteSubNiti = (item) => {
+    setVisibleConfirmSubNitiDelete(true);
+    setEditSubItem(item);
+  };
+
+  const deleteSubNiti = async (id) => {
+    const token = await AsyncStorage.getItem('storeAccesstoken');
+    try {
+      const response = await fetch(base_url + 'api/delete-sub-niti/' + id, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      const responseData = await response.json();
+      if (responseData.status) {
+        getAllNiti();
+        getCompletedNiti();
+        console.log("Sub Niti deleted successfully", responseData);
+        ToastAndroid.show('Sub Niti deleted successfully', ToastAndroid.SHORT);
+      } else {
+        console.log("Error", responseData);
+        ToastAndroid.show('Error deleting Sub Niti', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log("Error", error);
+      ToastAndroid.show('Error deleting Sub Niti', ToastAndroid.SHORT);
+    }
+  };
+
   useEffect(() => {
     if (isFocused) {
       getAllNiti();
       getCompletedNiti();
-      getSpecialNiti();
+      getOtherNiti();
     }
   }, [isFocused]);
 
@@ -402,7 +488,7 @@ const Index = () => {
         </View>
         <View style={{ marginRight: 10 }}>
           <TouchableOpacity onPress={() => setIsModalVisible(true)} style={{ backgroundColor: 'green', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6 }}>
-            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Special Niti</Text>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>Other Niti</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -516,7 +602,7 @@ const Index = () => {
         </View>)
         : (
           activeTab === 'upcoming' ? (
-            <ScrollView style={styles.cell}>
+            <ScrollView style={styles.cell} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
@@ -535,9 +621,9 @@ const Index = () => {
                             <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textTransform: 'capitalize' }}>{item.niti_name}</Text>
                             <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Start Time: {moment(item.start_time, "HH:mm:ss").format("HH:mm")}</Text>
                             <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Running Time: {runningTimers[item.niti_id] || '00:00:00'}</Text>
-                            {item.running_sub_niti && item.running_sub_niti.sub_niti_name &&
+                            {/* {item.running_sub_niti && item.running_sub_niti.sub_niti_name &&
                               <Text style={{ color: '#000', fontSize: 14, fontWeight: '400' }}>Current Sub Niti: <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{item.running_sub_niti.sub_niti_name}</Text></Text>
-                            }
+                            } */}
                           </View>
                         )}
                       </View>
@@ -631,9 +717,155 @@ const Index = () => {
                         )}
                       </View>
                     </TouchableOpacity>
+                    {collapseNiti === item.niti_id && <View style={{ width: '100%', height: 1, backgroundColor: '#ddd', marginTop: 10 }} />}
                     {/* Sub Niti Text Area Input Box */}
-                    {collapseNiti === item.niti_id && item.niti_type === "daily" && (item.niti_status === "Started" || item.niti_status === "Paused") && (
+                    {collapseNiti === item.niti_id && (item.niti_type === "daily" || item.niti_type === "special") && (item.niti_status === "Started" || item.niti_status === "Paused") && (
                       <View style={{ marginTop: 10, paddingHorizontal: 10 }}>
+                        {/* show here sub niti list */}
+                        <FlatList
+                          data={item.running_sub_niti}
+                          keyExtractor={subItem => subItem.sub_niti_id.toString()}
+                          renderItem={({ item: subItem }) => (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 10, borderBottomWidth: 0.5, borderColor: '#ddd' }}>
+                              <View style={{ width: '70%' }}>
+                                <Text style={{ color: '#000', fontSize: 15, fontWeight: '600' }}>
+                                  {subItem.sub_niti_name}
+                                </Text>
+                              </View>
+                              <View style={{ width: '30%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <TouchableOpacity
+                                  onPress={() => editModal(subItem)}
+                                  style={{
+                                    paddingVertical: 6,
+                                    paddingHorizontal: 14,
+                                    borderRadius: 8,
+                                  }}
+                                >
+                                  <FontAwesome name="edit" size={20} color="#B7070A" />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  onPress={() => confirmDeleteSubNiti(subItem)}
+                                  style={{
+                                    paddingVertical: 6,
+                                    paddingHorizontal: 14,
+                                    borderRadius: 8,
+                                  }}
+                                >
+                                  <FontAwesome name="trash" size={20} color="#B7070A" />
+                                </TouchableOpacity>
+                              </View>
+                            </View>
+                          )}
+                        />
+                        {/* Edit Sub Niti Modal */}
+                        <Modal
+                          visible={isEditModalVisible}
+                          transparent
+                          animationType="slide"
+                          onRequestClose={() => setIsEditModalVisible(false)}
+                        >
+                          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                            <View style={{ width: '90%', backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Edit Sub Niti</Text>
+                                <TouchableOpacity onPress={() => setIsEditModalVisible(false)} style={{ marginBottom: 6 }}>
+                                  <FontAwesome name="close" size={25} color="#B7070A" />
+                                </TouchableOpacity>
+                              </View>
+                              <TextInput
+                                placeholder="Edit Sub Niti..."
+                                placeholderTextColor="#888"
+                                value={editSubItem?.sub_niti_name}
+                                onChangeText={text => setEditSubItem({ ...editSubItem, sub_niti_name: text })}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 10, paddingHorizontal: 15, paddingVertical: 10, fontSize: 16, color: '#000', textAlignVertical: 'top' }}
+                              />
+                              <TouchableOpacity
+                                style={{
+                                  backgroundColor: '#B7070A',
+                                  paddingVertical: 7,
+                                  paddingHorizontal: 10,
+                                  borderRadius: 5,
+                                  marginTop: 10,
+                                }}
+                                onPress={() => {
+                                  editSubNiti();
+                                  setIsEditModalVisible(false);
+                                }}
+                              >
+                                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600', textAlign: 'center' }}>Edit Sub Niti</Text>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        </Modal>
+
+                        {/* Confirm Delete Sub Niti */}
+                        <Modal
+                          visible={visibleConfirmSubNitiDelete}
+                          transparent
+                          animationType="fade"
+                          onRequestClose={() => setVisibleConfirmSubNitiDelete(false)}
+                        >
+                          <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{
+                              width: '85%',
+                              backgroundColor: '#fff',
+                              borderRadius: 16,
+                              padding: 25,
+                              shadowColor: '#000',
+                              shadowOffset: { width: 0, height: 3 },
+                              shadowOpacity: 0.3,
+                              shadowRadius: 10,
+                              elevation: 6,
+                            }}>
+                              <Text style={{ fontSize: 20, fontWeight: '700', color: '#B7070A', marginBottom: 10, textAlign: 'center' }}>
+                                🗑️ Confirm Deletion
+                              </Text>
+
+                              <Text style={{ fontSize: 16, color: '#444', textAlign: 'center', marginBottom: 25 }}>
+                                Are you sure you want to delete this <Text style={{ fontWeight: '600', color: '#B7070A' }}>Sub Niti</Text>? This action cannot be undone.
+                              </Text>
+
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <TouchableOpacity
+                                  onPress={() => setVisibleConfirmSubNitiDelete(false)}
+                                  style={{
+                                    backgroundColor: '#E0E0E0',
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 25,
+                                    borderRadius: 10,
+                                    flex: 1,
+                                    marginRight: 10,
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <Text style={{ color: '#333', fontSize: 16, fontWeight: '600' }}>Cancel</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    deleteSubNiti(editSubItem.sub_niti_id);
+                                    setVisibleConfirmSubNitiDelete(false);
+                                  }}
+                                  style={{
+                                    backgroundColor: '#B7070A',
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 25,
+                                    borderRadius: 10,
+                                    flex: 1,
+                                    marginLeft: 10,
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Delete</Text>
+                                </TouchableOpacity>
+                              </View>
+                            </View>
+                          </View>
+                        </Modal>
+
+                        {/* Add Sub Niti Input Box */}
                         <TextInput
                           placeholder="Add Sub Niti..."
                           placeholderTextColor="#888"
@@ -643,6 +875,8 @@ const Index = () => {
                           numberOfLines={4}
                           style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 10, paddingHorizontal: 15, paddingVertical: 10, fontSize: 16, color: '#000', textAlignVertical: 'top' }}
                         />
+
+                        {/* Add Sub Niti Button */}
                         <TouchableOpacity
                           style={{
                             backgroundColor: '#B7070A',
@@ -737,9 +971,9 @@ const Index = () => {
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
                 data={[...completedNiti].reverse()}
-                keyExtractor={item => item.niti_id}
+                keyExtractor={(item, index) => `main-${item.niti_id}-${index}`}
                 renderItem={({ item }) => (
-                  <View style={styles.smallCell1}>
+                  <View style={[styles.smallCell1, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
                     <View style={{ width: '60%' }}>
                       <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textTransform: 'capitalize' }}>{item.niti_name}</Text>
                       <Text style={{ color: '#000', fontSize: 12, fontWeight: '400' }}>Start Time: {moment(item.start_time, "HH:mm:ss").format("HH:mm:ss")}</Text>
@@ -818,7 +1052,7 @@ const Index = () => {
 
             {/* Special Niti List */}
             <FlatList
-              data={specialNiti}
+              data={otherNiti}
               keyExtractor={item => item.id.toString()}
               showsVerticalScrollIndicator={false}
               style={{ marginBottom: 10 }}
@@ -827,7 +1061,7 @@ const Index = () => {
                   style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 0.5, borderColor: '#ddd' }}
                   onPress={() => {
                     setSelectedItem(item.id);
-                    setOtherSpecialNiti('');
+                    setOtherNitiText('');
                   }}
                 >
                   <FontAwesome
@@ -851,9 +1085,9 @@ const Index = () => {
             <TextInput
               placeholder="Or type other special Niti..."
               placeholderTextColor="#888"
-              value={otherSpecialNiti}
+              value={otherNitiText}
               onChangeText={text => {
-                setOtherSpecialNiti(text);
+                setOtherNitiText(text);
                 if (text.length >= 4) setSelectedItem(null);
               }}
               style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 10, paddingHorizontal: 15, height: 45, marginVertical: 15, fontSize: 16, color: '#000' }}
@@ -861,14 +1095,14 @@ const Index = () => {
 
             {/* Submit Button */}
             <TouchableOpacity
-              onPress={handleSubmitSpecialNiti}
-              disabled={!selectedItem && otherSpecialNiti.trim().length < 4}
+              onPress={handleSubmitOtherNiti}
+              disabled={!selectedItem && otherNitiText.trim().length < 4}
               style={{
                 borderRadius: 8,
                 paddingVertical: 12,
                 alignItems: 'center',
                 backgroundColor:
-                  selectedItem || otherSpecialNiti.trim().length >= 4 ? '#B7070A' : '#ccc'
+                  selectedItem || otherNitiText.trim().length >= 4 ? '#B7070A' : '#ccc'
               }}
             >
               <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Submit</Text>
@@ -876,35 +1110,6 @@ const Index = () => {
           </View>
         </View>
       </Modal>
-
-      <View style={{ padding: 0, height: 58, borderRadius: 0, backgroundColor: '#f2ebe4', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', margin: 0, paddingBottom: 5 }}>
-          <View style={{ padding: 0, width: '30%' }}>
-            <View activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
-              <View style={{ alignItems: 'center' }}>
-                <Image source={require('../../assets/images/panji765.png')} style={{ width: 24, height: 24, marginTop: 12 }} />
-                <Text style={{ color: '#dc3545', fontSize: 11, fontWeight: '500', height: 17 }}>Niti</Text>
-              </View>
-            </View>
-          </View>
-          <View style={{ padding: 0, width: '30%' }}>
-            <TouchableHighlight onPressIn={() => navigation.navigate('Darshan')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
-              <View style={{ alignItems: 'center' }}>
-                <Image source={require('../../assets/images/darshan.png')} style={{ width: 32, height: 32, tintColor: 'gray', marginTop: 6, }} />
-                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Darshan</Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View style={{ padding: 0, width: '30%' }}>
-            <TouchableHighlight onPressIn={() => navigation.navigate('MahaPrasad')} activeOpacity={0.6} underlayColor="#DDDDDD" style={{ backgroundColor: '#f2ebe4', flexDirection: 'column', alignItems: 'center' }}>
-              <View style={{ alignItems: 'center', marginTop: 3 }}>
-                <Image source={require('../../assets/images/mahaprasadad32412.png')} style={{ width: 34, height: 34, tintColor: 'gray' }} />
-                <Text style={{ color: 'gray', fontSize: 11, fontWeight: '500', height: 17 }}>Maha Prasad</Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-        </View>
-      </View>
     </View>
   );
 };

@@ -63,24 +63,6 @@ const DrawerModal = ({ visible, onClose }) => {
                                     </View>
                                 </View>
                             </View>
-                            <TouchableOpacity style={styles.drawerCell} onPress={() => { navigation.navigate('Home'), onClose() }}>
-                                <View style={{ width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image style={{ height: 24, width: 24, backgroundColor: 'red' }} source={require("../assets/images/panji765.png")} />
-                                </View>
-                                <Text style={styles.drawerLable}>Niti</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.drawerCell} onPress={() => { navigation.navigate('Darshan'), onClose() }}>
-                                <View style={{ width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image style={{ height: 32, width: 32 }} source={require("../assets/images/darshan.png")} />
-                                </View>
-                                <Text style={styles.drawerLable}>Darshan</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.drawerCell} onPress={() => { navigation.navigate('MahaPrasad'), onClose() }}>
-                                <View style={{ width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image style={{ height: 45, width: 45 }} source={require("../assets/images/mahaprasadad32412.png")} />
-                                </View>
-                                <Text style={styles.drawerLable}>Maha Prasad</Text>
-                            </TouchableOpacity>
                             <TouchableOpacity style={styles.drawerCell} onPress={() => { setIsHundiModalVisible(true), onClose() }}>
                                 <View style={{ width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                                     <Image style={{ height: 23, width: 23 }} source={require("../assets/images/hundiColection654.png")} />
@@ -94,6 +76,12 @@ const DrawerModal = ({ visible, onClose }) => {
                                 <Text style={styles.drawerLable}>Notice</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.drawerCell, { marginTop: 0.5 }]}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.drawerCell, { marginTop: 0 }]}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.drawerCell, { marginTop: 0 }]}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.drawerCell, { marginTop: 0 }]}>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.drawerCell, { marginTop: 0 }]}>
                             </TouchableOpacity>
