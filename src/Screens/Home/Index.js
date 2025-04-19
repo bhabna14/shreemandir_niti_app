@@ -27,6 +27,8 @@ const Index = () => {
       setRefreshing(false);
       getAllNiti();
       getCompletedNiti();
+      getOtherNiti();
+      getNotice();
       console.log("Refreshing Successful");
     }, 2000);
   }, []);
@@ -348,7 +350,7 @@ const Index = () => {
         getAllNiti();
         getCompletedNiti();
         setSubNitiName('');
-        setCollapseNiti(false);
+        // setCollapseNiti(false);
         console.log("Sub Niti added successfully", responseData);
         ToastAndroid.show('Sub Niti added successfully', ToastAndroid.SHORT);
       } else {
@@ -467,11 +469,35 @@ const Index = () => {
     }
   };
 
+  const [notice, setNotice] = useState({});
+
+  const getNotice = async () => {
+    try {
+      const response = await fetch(base_url + 'api/latest-temple-notice', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const responseData = await response.json();
+      if (responseData.status) {
+        // console.log("Notice", responseData.data);
+        setNotice(responseData.data[0]);
+      } else {
+        console.log("Error", responseData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (isFocused) {
       getAllNiti();
       getCompletedNiti();
       getOtherNiti();
+      getNotice();
     }
   }, [isFocused]);
 
@@ -577,7 +603,9 @@ const Index = () => {
         </View>
       )}
       {/* Notice Banner */}
-      <NoticeBanner noticeText="🌟 Jagannath Maha Prasad will be served today at 12:30 PM. Please arrive 15 minutes early. Jai Jagannath!" />
+      {notice && notice.notice_name &&
+        <NoticeBanner noticeText={notice.notice_name} />
+      }
       {/* Today Date */}
       <View style={{ backgroundColor: '#FFBE00', paddingTop: 1 }}>
         <View style={{ backgroundColor: '#B7070A', paddingVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
