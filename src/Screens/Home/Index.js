@@ -996,6 +996,7 @@ const Index = () => {
           ) : (
             <ScrollView style={styles.cell}>
               <FlatList
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
                 data={[...completedNiti].reverse()}

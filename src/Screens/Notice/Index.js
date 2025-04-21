@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, Modal, StyleSheet, ToastAndroid, ScrollView } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, TextInput, Modal, StyleSheet, ToastAndroid, ScrollView, RefreshControl } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import { base_url } from '../../../App';
@@ -10,6 +10,16 @@ const Index = () => {
     const [noticeText, setNoticeText] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
     const [editNoticeId, setEditNoticeId] = useState(null);
+
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+            console.log("Refreshing Successful");
+            fetchNotices();
+        }, 2000);
+    }, []);
 
     const fetchNotices = async () => {
         try {
@@ -42,7 +52,7 @@ const Index = () => {
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     id: isEditMode ? editNoticeId : null,
                     notice_name: noticeText,
                 }),
@@ -107,6 +117,7 @@ const Index = () => {
 
             {/* Notices */}
             <FlatList
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 data={notices}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}

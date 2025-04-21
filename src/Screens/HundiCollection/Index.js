@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Modal, TouchableOpacity, TextInput, StyleSheet, ToastAndroid, ScrollView } from 'react-native';
+import { View, Text, FlatList, Modal, TouchableOpacity, TextInput, StyleSheet, ToastAndroid, ScrollView, RefreshControl } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
@@ -14,6 +14,16 @@ const Index = () => {
 
     const [isEditMode, setIsEditMode] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
+
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+            console.log("Refreshing Successful");
+            getHundiCollection();
+        }, 2000);
+    }, []);
 
     const getHundiCollection = async () => {
         try {
@@ -154,6 +164,7 @@ const Index = () => {
             </View>
 
             <FlatList
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 data={hundiList}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => index.toString()}
