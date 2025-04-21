@@ -36,13 +36,16 @@ const Index = () => {
 
         try {
             const endpoint = isEditMode
-                ? `${base_url}api/update-temple-notice/${editNoticeId}`
+                ? `${base_url}api/notice/update-name`
                 : `${base_url}api/save-temple-news`;
 
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ notice_name: noticeText }),
+                body: JSON.stringify({ 
+                    id: isEditMode ? editNoticeId : null,
+                    notice_name: noticeText,
+                }),
             });
 
             const result = await response.json();

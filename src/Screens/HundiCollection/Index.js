@@ -25,7 +25,9 @@ const Index = () => {
         }
     };
 
-    useEffect(() => { getHundiCollection(); }, []);
+    useEffect(() => {
+        getHundiCollection();
+    }, []);
 
     const handleSaveHundi = async () => {
         try {
@@ -36,11 +38,11 @@ const Index = () => {
                 silver: `${hundiData.silver} grams`,
             };
 
-            const url = isEditMode
-                ? `${base_url}api/update-hundi-collection/${editingItem.id}`
-                : `${base_url}api/save-hundi-collection`;
+            // console.log("Payload to save:", payload);
+            // return;
 
-            const method = isEditMode ? 'PUT' : 'POST';
+            const url = `${base_url}api/save-hundi-collection`;
+            const method = 'POST';
 
             const response = await fetch(url, {
                 method,
@@ -50,18 +52,61 @@ const Index = () => {
 
             const result = await response.json();
             if (result.status) {
-                ToastAndroid.show(isEditMode ? 'Updated!' : 'Saved!', ToastAndroid.SHORT);
+                ToastAndroid.show('Saved!', ToastAndroid.SHORT);
                 setHundiData({ rupees: '', gold: '', silver: '' });
                 setIsModalVisible(false);
-                setIsEditMode(false);
-                setEditingItem(null);
                 getHundiCollection();
             } else {
                 ToastAndroid.show('Failed to save.', ToastAndroid.SHORT);
             }
         } catch (error) {
             ToastAndroid.show('Error occurred!', ToastAndroid.SHORT);
-            console.error("Save Hundi Error:", error);
+            console.log("Save Hundi Error:", error);
+        }
+    };
+
+    const handleUpdateHundi = async () => {
+        const payload = {
+            id: editingItem.id,
+            date: moment(hundiDate).format('YYYY-MM-DD'),
+            rupees: hundiData.rupees,
+            gold: `${hundiData.gold} grams`,
+            silver: `${hundiData.silver} grams`,
+        };
+
+        try {
+            const response = await fetch(`${base_url}api/hundi/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const contentType = response.headers.get("content-type");
+            const rawText = await response.text();
+            console.log("Raw Response:", rawText);
+
+            if (!contentType || !contentType.includes("application/json")) {
+                ToastAndroid.show('Unexpected server response', ToastAndroid.SHORT);
+                console.error("Expected JSON but got:", rawText);
+                return;
+            }
+
+            const result = JSON.parse(rawText); // Now safe to parse
+            if (response.ok && result.status) {
+                ToastAndroid.show('Updated!', ToastAndroid.SHORT);
+                setHundiData({ rupees: '', gold: '', silver: '' });
+                setIsModalVisible(false);
+                getHundiCollection();
+            } else {
+                ToastAndroid.show(result.message || 'Failed to update.', ToastAndroid.SHORT);
+                console.error("Update failed:", result);
+            }
+        } catch (error) {
+            ToastAndroid.show('Network or server error!', ToastAndroid.SHORT);
+            console.error("Fetch error:", error);
         }
     };
 
@@ -151,7 +196,7 @@ const Index = () => {
                             <Text style={{ color: '#333' }}>{moment(hundiDate).format("DD MMM YYYY")}</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={handleSaveHundi} style={styles.saveBtn}>
+                        <TouchableOpacity onPress={isEditMode ? handleUpdateHundi : handleSaveHundi} style={styles.saveBtn}>
                             <Text style={{ color: '#fff', fontWeight: 'bold' }}>{isEditMode ? 'Update' : 'Save'}</Text>
                         </TouchableOpacity>
 
